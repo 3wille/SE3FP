@@ -2,33 +2,37 @@
 (require test-engine/racket-tests)
 
 ;Aufgabe 1.1
+;KOMMENTAR: 4 Pkt
 ;Umrechnung von Grad ins Bogenmaß
 (define (degrees->radians deg)(
-                              * deg ( / pi 180)
-))
+                               * deg ( / pi 180)
+                                 ))
 
 ;(degrees->radians 90)
 ;Umrechnung vom Bogenmaß zu Grad
 (define (radians->degrees rad)(
-                              * rad ( / 180 pi )
-))
+                               * rad ( / 180 pi )
+                                 ))
 
 ;Aufgabe 1.2
+;KOMMENTAR: 3 Pkt
 ;Umkehrfunktion des Cosinus
 (define (my-acos alpha)(
                         - (/ pi 2) (* 2 (atan(/ alpha (+ 1 (sqrt(- 1 (* alpha alpha)))))))
                           )
-;                        acos alpha
-;                        atan(/ (sqrt(- 1 (* alpha alpha)))  alpha)
+  ;                        acos alpha
+  ;                        atan(/ (sqrt(- 1 (* alpha alpha)))  alpha)
   )
 
 
 ;Aufgabe 1.3
+;KOMMENTAR: 1 Pkt
 ;Umrechnung von Nautischen Meilen zu Kilometern
 (define (nm->km nm)
   (* nm 1.852))
 
 ;Aufgabe 2.1
+;KOMMENTAR: 11 Pkt
 ; Distanz zwischen A und B mit Parametern
 ; Start-Breitengrad Start-Längengrad Ziel-Breitengrad Ziel-Längengrad
 (define (distanzAB ab al bb bl)
@@ -56,6 +60,7 @@
   )
 
 ;Aufgabe 2.2
+;KOMMENTAR: 4 Pkt
 ; Richtung des Kurses zwischen A und B mit Parametern
 ; Start-Breitengrad Start-Längengrad Ziel-Breitengrad Ziel-Längengrad
 (define (Anfangskurs Aφ Aλ Bφ Bλ)
@@ -64,7 +69,7 @@
                     (my-acos
                      (/ (- (sin (degrees->radians Bφ))
                            (* (cos (dG Aφ Aλ Bφ Bλ))
-                             (sin (degrees->radians Aφ)))
+                              (sin (degrees->radians Aφ)))
                            ) 
                         (* (cos (degrees->radians Aφ))
                            (sin (dG Aφ Aλ Bφ Bλ)))
@@ -88,6 +93,7 @@
   )
 
 ;Gibt für beliebige gradzahlen die entsprechende Himmerlsrichtung züruck
+;KOMMENTAR: 5.5 Pkt
 (define (grad->himmelsrichtung grad)
   (cond[(<= grad 11.25)"N"]
        [(<= grad 33.75)"NNE"]
@@ -117,7 +123,7 @@
   (cond[(equal? hr "N")0]
        [(equal? hr "NNE")22.5]
        [(equal? hr "NE")45]
-       [(equal? hr "ENE")47.5]
+       [(equal? hr "ENE")47.5] ;KOMMENTAR: 67.5
        [(equal? hr "E")90]
        [(equal? hr "ESE")112.5]
        [(equal? hr "SE")135]
@@ -199,4 +205,7 @@
 ( check-within (himmelsrichtung->grad "SSW") 202.5 epsilon)
 
 ; GO! :)
+;KOMMENTAR: sehr hübsch! :)
 (test)
+
+;KOMMENTAR: 28.5 Punkte
