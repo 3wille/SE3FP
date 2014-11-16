@@ -1,0 +1,46 @@
+#lang racket
+
+;;;Aufgabe 1
+;;1.1
+
+(define buchstabiertafel 
+  '((A Alfa)
+    (B Bravo)
+    (C Charlie)
+    (D Delta)
+    (E Echo)
+    (F Foxtrott)
+    (G Golf)
+    (H Hotel)
+    (I India)
+    (J Juliet)
+    (K Kilo)
+    (L Lima)
+    (M Mike)
+    (N November)
+    (O Oscar)
+    (P Papa)
+    (Q Quebec)
+    (R Romeo)
+    (S Sierra)
+    (T Tango)
+    (U Uniform)
+    (V Viktor)
+    (W Whiskey)
+    (X X-Ray)
+    (Y Yankee)
+    (Z Zulu)
+    (0 Nadazero)
+    (1 Unaone)
+    (2 Bissotwo)
+    (3 Terrathree)
+    (4 Kartefour)
+    (5 Pantafice)
+    (6 Soxisix)
+    (7 Setteseven)
+    (8 Oktoeight)
+    (9 Novenine)
+    ("," Decimal)
+    ("." Stop)))
+
+  
