@@ -128,16 +128,10 @@
      (#\9 Z9)))
 
 ;; Aufgabe 4.2
-
-;; Hilfsfunktion für den Aufruf der c->f Funktion, die nur dafür da ist, dass das erste Element der Liste 
-;; evaluiert wird, damit man die Flagge und nicht '(A) als Rückgabewert erhält. Leider ziemlich umständlich :(
-(define (char->flagge c)
-  (eval (car(c->f c))))
-
 ;; Suche nach der ersten Übereinstimmung mit dem ersten Element der Paare
-(define (c->f c)
+(define (char->flagge c)
   (cdr (assoc c Flaggentafel)))
-
+;;; (eval (car (char->flagge #\A)))
 
 ;; Aufgabe 4.3
 ;; Aufruf der rekursiven Hilfsfunktion
@@ -153,8 +147,5 @@
              (flagout-list-of-char (cdr cl))))
       )
 
-
-
-
 ; Test  
-;;(flagout "RACKET")
+(flagout "RACKET")
