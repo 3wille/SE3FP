@@ -66,8 +66,8 @@
 (define (spellout-list-of-char cl)
   (if (<= (length cl) 1)
       (char->CoDe (car cl))
-      (spellout-list-of-char (cdr cl))
+      (append (char->CoDe (car cl)) 
+             (spellout-list-of-char (cdr cl))))
       )
-  )
   
-(spellout "abc")
+(spellout "Racket")
