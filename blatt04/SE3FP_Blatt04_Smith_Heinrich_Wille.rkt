@@ -1,7 +1,33 @@
 #lang racket
 
-;;;Aufgabe 1
+;; Aufgabe 1
 
+#| 
+1.(max (min 2 (- 2 5)) 0) evaluiert zu 0, weil das Minimum von 2 und (2 - 5) -3 ergibt
+und das Maximum von -3 und 0 wiederum 0 ist
+2.'(+ (- 2 13) 11) evaluiert zu '(+ (- 2 13) 11), weil ' (quote) die Evaluierung blockiert
+3.(cadr '(Alle Jahre wieder)) evaluiert zu 'Jahre, weil cadr das erste Element der Restliste einer Liste bestimmt
+4.(cddr '(kommt (das Weihnachtfest))) evaluiert zu '(), weil cddr die Restliste der Restliste bestimmt und die 
+Restliste der ursprünglichen Liste aus nur einem Element bestimmt und die Restliste einer ein-elementigen Liste 
+die leere Liste ist
+5.(cdadr '(kommt (das . Weihnachtfest))) evaluiert zu 'Weihnachtfest, weil erst cdr auf die Liste angewendet wird
+was zu '((das . Weihnachtfest)) evaluiert also zu der Liste, die als erstes Element das Paar (das . Weihnachtfest) 
+enthält sowie als zweites Element die leere Liste. Wenn dann car auf diese Liste angewendet wird bekommt man
+(das . Weihnachtfest) und durch anschließendes cdr das zweite Element dieser Liste also 'Weihnachtsfest.
+6.(cons 'Listen '(ganz einfach und)) evaluiert zu '(Listen ganz einfach und), weil Paare deren zweites Element eine
+Liste ist, in der vereinfachten Listennotaion dargestellt werden und durch Anwendung von cons ensteht ja ein Paar.
+7.(cons 'Paare 'auch) evaluiert zu '(Paare . auch). Cons fügt am Anfang einer Liste ein Element an. Der dot-Operator
+ ist eine Infix-Operation für den cons-Operator.
+8.(equal? (list 'Racket 'Prolog 'Java) '(Racket Prolog Java)) evaluiert zu #t (true), weil die durch list erzeugte
+Liste '(Racket Prolog Java) und die durch die Angabe der einzelnen Element in Klammern mit dem quote erzeugte Liste
+die gleichen Elemente enthalten (bzw. die Elemente den gleichen Wert haben), also eqv? auf diese Listen angewendet true 
+liefern würde.
+9.(eq? (list 'Racket 'Prolog 'Java) (cons 'Racket '(Prolog Java))) evaluiert zu #f (false), da eq? testet ob es sich
+bei beiden Argumenten um identische Objekte handelt, was bei diesen beiden Listen nicht der Fall ist. equal? oder eqv?
+hätten bei diesen beiden Listen true geliefert, weil diese Listen die gleichen Elemente enthalten bzw. die Elemente 
+den gleichen Wert haben.
+
+|#
 
 ;;;Aufgabe 3
 ( define ( hoch3 x ) (* x x x ) )
