@@ -29,7 +29,53 @@ den gleichen Wert haben.
 
 |#
 
-;;;Aufgabe 3
+;; Aufgabe 2
+;; Aufgabe 2.1 Grammatik Backus-Naur Form
+#|
+Notmeldung     := <Übersschrift> 
+                  <Standortangabe> 
+                  <Notfallart> 
+                  <Hilfeleistung> 
+                  <Peilzeichen>
+                  <Unterschrift>
+                  <Ende>
+Überschrift    := MAYDAY MAYDAY MAYDAY
+                  HIER IST
+                  <Schiffsname> <Schiffsname> <Schiffsname>
+                  DELTA ECHO
+                  <Rufzeichen>
+                  MAYDAY
+                  <Schiffsname>
+                  ICH BUCHSTABIERE
+                  <Schiffsnamebuchstabiert>
+                  RUFZEICHEN
+                  <Rufzeichenbuchstabiert>
+Schiffsname    := text
+Rufzeichen     := text
+Schiffsnamebuchstabiert := text
+Rufzeichenbuchstabiert  := text
+Notfallart     := text
+Hilfeleistung  := text
+Peilzeichen    := - - -
+Unterschrift   := <Schiffsname> <Rufzeichenbuchstabiert>
+Ende           := OVER
+|#
+;; Aufgabe 2.2 Generator
+(define (Notruf schiffsnamen rufzeichen position notfallart)
+  (append (überschrift) 
+          (standortangabe) 
+          (artdesnotfalls) 
+          (angabenzurhilfeleistung) 
+          (peilzeichen) 
+          (unterschrift) 
+          (ende)
+  ))
+
+;; Aufgabe 2.3 Test
+
+
+
+;;Aufgabe 3
 ( define ( hoch3 x ) (* x x x ) )
 
 ( hoch3 ( * 3 (+ 1 ( hoch3 2 ) ) ) )
