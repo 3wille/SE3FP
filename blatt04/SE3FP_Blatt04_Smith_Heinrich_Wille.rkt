@@ -1,5 +1,86 @@
 #lang racket
 
+;; Hilfsfunktion für Aufgabe 2 von Blatt 3
+;; Liste aus Paaren von char -> string
+;; Wir wÃ¤hlen eine Liste von Paaren, weil wir mit assoc das erste Paar finden kÃ¶nnen, dessen erstes Element
+;; gleich dem SchlÃ1⁄4ssel ist. Wir kÃ¶nnen also mit Hilfe eines SchlÃ1⁄4ssel das korrespondierende Element erhalten.
+;; Solche Listen von Paaren (auch Assoiziationslisten genannt) entsprechen eigentlich einer Hashmap, 
+;; die wir bereits in SEII kennengelernt haben.
+(define Buchstabiertafel
+  '( (#\A "ALFA ")
+     (#\B "BRAVO ")
+     (#\C "CHARLIE ")
+     (#\D "DELTA ")
+     (#\E "ECHO ")
+     (#\F "FOXTROTT ")
+     (#\G "GOLF ")
+     (#\H "HOTEL ")
+     (#\I "INDIA ")
+     (#\J "JULIETTE ")
+     (#\K "KILO ")
+     (#\L "LIMA ")
+     (#\M "MIKE ")
+     (#\N "NOVEMBER ")
+     (#\O "OSCAR ")
+     (#\P "PAPA ")
+     (#\Q "QUEBEC ")
+     (#\R "ROMEO ")
+     (#\S "SIERRA ")
+     (#\T "TANGO ")
+     (#\U "UNIFORM ")
+     (#\V "VIKTOR ")
+     (#\W "WHISKEY ")
+     (#\X "X-RAY ")
+     (#\Y "YANKEE ")
+     (#\Z "ZULU ")
+     (#\0 "Nadazero ")
+     (#\1 "Unaone ")
+     (#\2 "Bissotwo ")
+     (#\3 "Terrathree ")
+     (#\4 "Kartefour ")
+     (#\5 "Pantafive ")
+     (#\6 "Soxisix ")
+     (#\7 "Setteseven ")
+     (#\8 "Oktoeight ")
+     (#\9 "Novenine ")
+     (#\, "Decimal ")
+     (#\. "Stop ")))
+
+;; Hilfsfunktion für Aufgabe 2 von Blatt 3
+;; Suche nach der ersten Ãœbereinstimmung mit dem ersten Element der Paare
+;; Eine Funktion, die Buchstaben mittels der Buchstabiertabelle auf ihre SchlÃ¼ssel abbildet
+(define (char->code c)
+  (cdr (assoc c Buchstabiertafel)))
+
+;; Hilfsfunktion für Aufgabe 2 von Blatt 3
+;; ASCII Rechnen... Ã¼ber den Integerumweg
+;; Eine Funktion, die Kleinbuchstaben auf die entsprechenden GroÃŸbuchstaben abbildet und 
+;; alle anderen Zeichen auf sich selbst.
+(define (char->CoDe c)
+  (char->code
+   (if (char<=? #\a c #\z)
+       (integer->char (- (char->integer c) 32))
+       c)))
+
+;; Hilfsfunktion für Aufgabe 2 von Blatt 3
+;; Eine Funktion, die einen Text in Form eines Strings als Eingabe erhÃ¤lt und auf eine Liste der
+;; BuchstabierschlÃ¼ssel als Strings abbildet
+
+;; Aufruf der rekursiven Hilfsfunktion string->list
+(define (spellout text)
+  (string-append* "" (spellout-list-of-char (string->list text))))
+  
+
+;; Aufbau einer neuen Liste aus den substituierten Elementen
+(define (spellout-list-of-char cl)
+  (if (= (length cl) 1)
+      (char->CoDe (car cl))
+      (append (char->CoDe (car cl))(spellout-list-of-char (cdr cl))))
+      )
+
+
+       
+
 ;; Aufgabe 1
 
 #| 
@@ -60,20 +141,65 @@ Peilzeichen    := - - -
 Unterschrift   := <Schiffsname> <Rufzeichenbuchstabiert>
 Ende           := OVER
 |#
+(define md "MAYDAY ")
+(define ueberschr (string-append md md md))
+(define ichBin "HIER IST ")
+(define buchstabiere "ICH BUCHSTABIERE ")
+(define rz "RUFZEICHEN ")
+(define np "NOTFALLPOSITION ")
+(define ende "OVER")
+(define notZeit "NOTFALLZEIT ")
+
+
 ;; Aufgabe 2.2 Generator
-(define (Notruf schiffsnamen rufzeichen position notfallart)
-  (append (überschrift) 
-          (standortangabe) 
-          (artdesnotfalls) 
-          (angabenzurhilfeleistung) 
-          (peilzeichen) 
-          (unterschrift) 
-          (ende)
-  ))
+(define (Notruf schiffsname rufzeichen position notfallart zeit)
+  (if (and (string? schiffsname)
+           (string? rufzeichen)
+           (string? position)
+           (string? notfallart)
+           (string? zeit))
+   (display 
+    (string-append 
+     ueberschr
+     "\n"
+     ichBin
+     "\n"
+     schiffsname " "
+     schiffsname " "
+     schiffsname " "
+     (spellout rufzeichen)
+     "\n"
+     md
+     schiffsname " "
+     buchstabiere
+     (spellout schiffsname)
+     "\n"
+     rz
+     (spellout rufzeichen)
+     "\n"
+     np
+     position
+     "\n"
+     notZeit
+     zeit
+     "\n"
+     notfallart
+     "\n"
+     schiffsname " "
+     (spellout rufzeichen)
+     "\n"
+     ende
+     "\n"
+     "\n"))
+   (display "Falsche Eingabe Strings erwartet!")))
 
 ;; Aufgabe 2.3 Test
 
-
+(Notruf "BABETTE" "DEJY" "UNGEFAEHR 10 SM NORDOESTLICH LEUCHTTURM KIEL" (string-append "SCHWERER WASSEREINBRUCH 
+WIR SINKEN" "\n" "KEINE VERLETZTEN" "\n" "VIER MANN GEHEN IN DIE RETTUNGSINSEL" "\n" "SCHNELLE HILFE ERFORDERLICH"
+"\n" "ICH SENDE DEN TRAEGER --") "1000 UTC")
+(Notruf "AMIRA" "AMRY" "53°56’N, 006°31’E" (string-append "WIR SINKEN" "\n" "UNSER SCHIFF IST 15 METER LANG" "\n"
+"UND HAT EINEN ROTEN RUMPF" "\n" "15 MANN AN BORD" "\n" "SCHNELLE HILFE ERFORDERLICH") "1640 UTC")
 
 ;;Aufgabe 3
 ( define ( hoch3 x ) (* x x x ) )
