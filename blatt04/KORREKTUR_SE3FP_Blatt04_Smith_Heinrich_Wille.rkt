@@ -1,0 +1,261 @@
+#lang racket
+
+;KOMMENTAR: 27 / 30 Punkte
+
+
+;; Hilfsfunktion für Aufgabe 2 von Blatt 3
+;; Liste aus Paaren von char -> string
+;; Wir wÃ¤hlen eine Liste von Paaren, weil wir mit assoc das erste Paar finden kÃ¶nnen, dessen erstes Element
+;; gleich dem SchlÃ1⁄4ssel ist. Wir kÃ¶nnen also mit Hilfe eines SchlÃ1⁄4ssel das korrespondierende Element erhalten.
+;; Solche Listen von Paaren (auch Assoiziationslisten genannt) entsprechen eigentlich einer Hashmap, 
+;; die wir bereits in SEII kennengelernt haben.
+(define Buchstabiertafel
+  '( (#\A "ALFA ")
+     (#\B "BRAVO ")
+     (#\C "CHARLIE ")
+     (#\D "DELTA ")
+     (#\E "ECHO ")
+     (#\F "FOXTROTT ")
+     (#\G "GOLF ")
+     (#\H "HOTEL ")
+     (#\I "INDIA ")
+     (#\J "JULIETTE ")
+     (#\K "KILO ")
+     (#\L "LIMA ")
+     (#\M "MIKE ")
+     (#\N "NOVEMBER ")
+     (#\O "OSCAR ")
+     (#\P "PAPA ")
+     (#\Q "QUEBEC ")
+     (#\R "ROMEO ")
+     (#\S "SIERRA ")
+     (#\T "TANGO ")
+     (#\U "UNIFORM ")
+     (#\V "VIKTOR ")
+     (#\W "WHISKEY ")
+     (#\X "X-RAY ")
+     (#\Y "YANKEE ")
+     (#\Z "ZULU ")
+     (#\0 "Nadazero ")
+     (#\1 "Unaone ")
+     (#\2 "Bissotwo ")
+     (#\3 "Terrathree ")
+     (#\4 "Kartefour ")
+     (#\5 "Pantafive ")
+     (#\6 "Soxisix ")
+     (#\7 "Setteseven ")
+     (#\8 "Oktoeight ")
+     (#\9 "Novenine ")
+     (#\, "Decimal ")
+     (#\. "Stop ")))
+
+;; Hilfsfunktion für Aufgabe 2 von Blatt 3
+;; Suche nach der ersten Ãœbereinstimmung mit dem ersten Element der Paare
+;; Eine Funktion, die Buchstaben mittels der Buchstabiertabelle auf ihre SchlÃ¼ssel abbildet
+(define (char->code c)
+  (cdr (assoc c Buchstabiertafel)))
+
+;; Hilfsfunktion für Aufgabe 2 von Blatt 3
+;; ASCII Rechnen... Ã¼ber den Integerumweg
+;; Eine Funktion, die Kleinbuchstaben auf die entsprechenden GroÃŸbuchstaben abbildet und 
+;; alle anderen Zeichen auf sich selbst.
+(define (char->CoDe c)
+  (char->code
+   (if (char<=? #\a c #\z)
+       (integer->char (- (char->integer c) 32))
+       c)))
+
+;; Hilfsfunktion für Aufgabe 2 von Blatt 3
+;; Eine Funktion, die einen Text in Form eines Strings als Eingabe erhÃ¤lt und auf eine Liste der
+;; BuchstabierschlÃ¼ssel als Strings abbildet
+
+;; Aufruf der rekursiven Hilfsfunktion string->list
+(define (spellout text)
+  (string-append* "" (spellout-list-of-char (string->list text))))
+  
+
+;; Aufbau einer neuen Liste aus den substituierten Elementen
+(define (spellout-list-of-char cl)
+  (if (= (length cl) 1)
+      (char->CoDe (car cl))
+      (append (char->CoDe (car cl))(spellout-list-of-char (cdr cl))))
+      )
+
+
+       
+
+;; Aufgabe 1
+;KOMMENTAR: 6 Pkt
+#| 
+1.(max (min 2 (- 2 5)) 0) evaluiert zu 0, weil das Minimum von 2 und (2 - 5) -3 ergibt
+und das Maximum von -3 und 0 wiederum 0 ist
+2.'(+ (- 2 13) 11) evaluiert zu '(+ (- 2 13) 11), weil ' (quote) die Evaluierung blockiert
+3.(cadr '(Alle Jahre wieder)) evaluiert zu 'Jahre, weil cadr das erste Element der Restliste einer Liste bestimmt
+4.(cddr '(kommt (das Weihnachtfest))) evaluiert zu '(), weil cddr die Restliste der Restliste bestimmt und die 
+Restliste der ursprünglichen Liste aus nur einem Element bestimmt und die Restliste einer ein-elementigen Liste 
+die leere Liste ist
+5.(cdadr '(kommt (das . Weihnachtfest))) evaluiert zu 'Weihnachtfest, weil erst cdr auf die Liste angewendet wird
+was zu '((das . Weihnachtfest)) evaluiert also zu der Liste, die als erstes Element das Paar (das . Weihnachtfest) 
+enthält sowie als zweites Element die leere Liste. Wenn dann car auf diese Liste angewendet wird bekommt man
+(das . Weihnachtfest) und durch anschließendes cdr das zweite Element dieser Liste also 'Weihnachtsfest.
+6.(cons 'Listen '(ganz einfach und)) evaluiert zu '(Listen ganz einfach und), weil Paare deren zweites Element eine
+Liste ist, in der vereinfachten Listennotaion dargestellt werden und durch Anwendung von cons ensteht ja ein Paar.
+7.(cons 'Paare 'auch) evaluiert zu '(Paare . auch). Cons fügt am Anfang einer Liste ein Element an. Der dot-Operator
+ ist eine Infix-Operation für den cons-Operator.
+8.(equal? (list 'Racket 'Prolog 'Java) '(Racket Prolog Java)) evaluiert zu #t (true), weil die durch list erzeugte
+Liste '(Racket Prolog Java) und die durch die Angabe der einzelnen Element in Klammern mit dem quote erzeugte Liste
+die gleichen Elemente enthalten (bzw. die Elemente den gleichen Wert haben), also eqv? auf diese Listen angewendet true 
+liefern würde.
+9.(eq? (list 'Racket 'Prolog 'Java) (cons 'Racket '(Prolog Java))) evaluiert zu #f (false), da eq? testet ob es sich
+bei beiden Argumenten um identische Objekte handelt, was bei diesen beiden Listen nicht der Fall ist. equal? oder eqv?
+hätten bei diesen beiden Listen true geliefert, weil diese Listen die gleichen Elemente enthalten bzw. die Elemente 
+den gleichen Wert haben.
+
+|#
+
+;; Aufgabe 2
+;; Aufgabe 2.1 Grammatik Backus-Naur Form
+
+;KOMMENTAR: 3 Pkt
+;KOMMENTAR: Syntax nicht ganz korrekt (Klammerung auf der linken Seite fehlt!)
+;;Richtig: <Notmeldung>
+#|
+Notmeldung     := <Übersschrift> 
+                  <Standortangabe> 
+                  <Notfallart> 
+                  <Hilfeleistung> 
+                  <Peilzeichen>
+                  <Unterschrift>
+                  <Ende>
+Überschrift    := MAYDAY MAYDAY MAYDAY
+                  HIER IST
+                  <Schiffsname> <Schiffsname> <Schiffsname>
+                  DELTA ECHO
+                  <Rufzeichen>
+                  MAYDAY
+                  <Schiffsname>
+                  ICH BUCHSTABIERE
+                  <Schiffsnamebuchstabiert>
+                  RUFZEICHEN
+                  <Rufzeichenbuchstabiert>
+Schiffsname    := text
+Rufzeichen     := text
+Schiffsnamebuchstabiert := text
+Rufzeichenbuchstabiert  := text
+Notfallart     := text
+Hilfeleistung  := text
+Peilzeichen    := - - -
+Unterschrift   := <Schiffsname> <Rufzeichenbuchstabiert>
+Ende           := OVER
+|#
+(define md "MAYDAY ")
+(define ueberschr (string-append md md md))
+(define ichBin "HIER IST ")
+(define buchstabiere "ICH BUCHSTABIERE ")
+(define rz "RUFZEICHEN ")
+(define np "NOTFALLPOSITION ")
+(define ende "OVER")
+(define notZeit "NOTFALLZEIT ")
+
+
+;; Aufgabe 2.2 Generator
+;KOMMENTAR: 6 Pkt
+;KOMMENTAR: Ein string-append im Funktionsaufruf ist sehr unschoen! 
+(define (Notruf schiffsname rufzeichen position notfallart zeit)
+  (if (and (string? schiffsname)
+           (string? rufzeichen)
+           (string? position)
+           (string? notfallart))
+   (display 
+    (string-append 
+     ueberschr
+     "\n"
+     ichBin
+     "\n"
+     schiffsname " "
+     schiffsname " "
+     schiffsname " "
+     (spellout rufzeichen)
+     "\n"
+     md
+     schiffsname " "
+     buchstabiere
+     (spellout schiffsname)
+     "\n"
+     rz
+     (spellout rufzeichen)
+     "\n"
+     np
+     position
+     "\n"
+     notZeit
+     zeit
+     "\n"
+     notfallart
+     "\n"
+     schiffsname " "
+     (spellout rufzeichen)
+     "\n"
+     ende
+     "\n"
+     "\n"))
+   (display "Falsche Eingabe Strings erwartet!")))
+
+;; Aufgabe 2.3 Test
+;KOMMENTAR: 3 Pkt
+(Notruf "BABETTE" "DEJY" "UNGEFAEHR 10 SM NORDOESTLICH LEUCHTTURM KIEL" (string-append "SCHWERER WASSEREINBRUCH 
+WIR SINKEN" "\n" "KEINE VERLETZTEN" "\n" "VIER MANN GEHEN IN DIE RETTUNGSINSEL" "\n" "SCHNELLE HILFE ERFORDERLICH"
+"\n" "ICH SENDE DEN TRAEGER --") "1000 UTC")
+(Notruf "AMIRA" "AMRY" "53°56’N, 006°31’E" (string-append "WIR SINKEN" "\n" "UNSER SCHIFF IST 15 METER LANG" "\n"
+"UND HAT EINEN ROTEN RUMPF" "\n" "15 MANN AN BORD" "\n" "SCHNELLE HILFE ERFORDERLICH") "1640 UTC")
+
+;;Aufgabe 3
+;KOMMENTAR: Unterschiede zwischen innerer und äußerer Reduktion sehr knapp angeschnitten
+;KOMMENTAR: 8 Pkt
+( define ( hoch3 x ) (* x x x ) )
+
+( hoch3 ( * 3 (+ 1 ( hoch3 2 ) ) ) )
+
+;;Innere
+;(hoch3 ( * 3 (+ 1 ( * 2 2 2 ) ) ) )
+;(hoch3 ( * 3 (+ 1 8 ) ) )
+;(hoch3 ( * 3 9 ) )
+;(hoch3 21 )
+;(* 27 27 27)
+;19683
+
+;;Äußere
+;(hoch3 ( * 3 (+ 1 ( hoch3 2 ) ) ) )
+;(* ( * 3 (+ 1 ( hoch3 2 ) ) ) ( * 3 (+ 1 ( hoch3 2 ) ) ) ( * 3 (+ 1 ( hoch3 2 ) ) ))
+;(* ( * 3 (+ 1 ( * 2 2 2 ) ) ) ( * 3 (+ 1 ( hoch3 2 ) ) ) ( * 3 (+ 1 ( hoch3 2 ) ) ))
+;(* ( * 3 (+ 1 8 ) ) ( * 3 (+ 1 ( hoch3 2 ) ) ) ( * 3 (+ 1 ( hoch3 2 ) ) ))
+;(* ( * 3 9 ) ( * 3 (+ 1 ( hoch3 2 ) ) ) ( * 3 (+ 1 ( hoch3 2 ) ) ))
+;(* 27 ( * 3 (+ 1 ( hoch3 2 ) ) ) ( * 3 (+ 1 ( hoch3 2 ) ) ))
+;(* 27 ( * 3 (+ 1 8 ) ) ( * 3 (+ 1 ( hoch3 2 ) ) ))
+;(* 27 ( * 3 9 ) ( * 3 (+ 1 ( hoch3 2 ) ) ))
+;(* 27 27 ( * 3 (+ 1 ( hoch3 2 ) ) ))
+;(* 27 27 ( * 3 (+ 1 ( * 2 2 2 ) ) ))
+;(* 27 27 ( * 3 (+ 1 8 ) ))
+;(* 27 27 ( * 3 9 ))
+;(* 27 27 27)
+;(19683)
+
+;Reduktionsstrategie:
+;Funktionen:
+;innere Reduktion
+;Spezialformen:
+;äußere Reduktion
+
+( define ( new−if condition? then−clause else−clause )
+   ( cond ( condition? then−clause )
+          ( else else−clause ) ) )
+
+( define ( faculty product counter max−count )
+   ( new−if (> counter max−count )
+            product
+            ( faculty (* counter product )
+                      (+ counter 1 )
+                      max−count ) ) )
+;Das Programm läuft in eine Endlosschleife.
+;Die äußere Reduktion ist hier nötig, damit zuerst die If Funktion aufgelöst wird, bevor die darin enthaltenen Blöcke ausgeführt werden.
+;In dem Beispiel wird versucht zuerst den Else-Zweig zu evaluieren. Dies führt zu der Endlosschleife, da nie die Abbruchbedingung ausgeführt wird.
