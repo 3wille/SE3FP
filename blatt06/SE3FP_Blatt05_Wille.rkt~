@@ -1,0 +1,4 @@
+#lang racket
+(require racket/trace)
+(require 2htdp/image)
+
