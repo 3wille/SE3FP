@@ -1,5 +1,5 @@
 #lang racket
-;;Aufgabe 1
+
 (define (range interval count)
   (let* ([dif (- (cdr interval) (car interval))]
          [step (/ dif count)])
@@ -28,35 +28,7 @@
                                  count
                                  ))))))
 
-
-
-;;Aufgabe 2.1
-
- (define (function->points f interval n)
-   (map 
-    cons 
-    (range interval n)
-    (map f (range interval n))))
-           
-;;Aufgabe 2.2
-(define (rescale1d n m)
-  (let ([x (/ (- (cdr m) 
-                 (car m) 10) 
-              (- (length n) 2))])
-    (list (car m) (+ (car m) x) (+ (car m) x x) (+ (car m) x x x) (cdr m)))) 
-
-(define (rescale2d n m k)
-  (map
-   cons
-   (rescale1d(map car n) m)
-   (list (car k) (/ (cdr k) 4) 10 (/ 37 4) (cdr k))))             
-
 ;;test
 (range '(0 . 10) 5)
 (endrange '(0 . 10) 5)
 (highrange '(0 . 10) 5)
-(function->points sqr '(0 . 10) 5)
-(rescale1d '(0 2 4 6 8) '(10 . 50))
-(rescale2d '((0 . 0) (2 . 4) (4 . 16) (6 . 36) (8 . 64))
-'(10 . 50)
-'(5 . 25))
