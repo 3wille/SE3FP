@@ -37,9 +37,18 @@ Anwendung von map die Funktionskomposition der beiden curry-Funktionen auf jedes
 und die dadurch entstandene Liste zurückgegeben. Es wird bei Anwendung der Komposition erst die letzte Teilfunktion
 der Kompisition (curry * 1.8) angewendet und auf das Ergebnis dann die erste Teilfunktion (curry + 33).
 
+Aufgabe 2
+
+1. (map abs xs)
+2. (filter durch3 xs)
+3. (foldl + 0 (filter even? (filter (curry < 10) '(3999 20 21 33 36 2))))
+
 
 |#
 
-
-
+;;Hilfsfunktion für Aufgabe 2.2
+(define (durch3? zahl)
+  (if (=(modulo zahl 3) 0)
+      #t
+      #f))
 
